@@ -1,34 +1,68 @@
 module.exports = function getZerosCount(number, base) {
-  var num = number;
-  var keynum = base;
-  var count = 0;
-  var stepen = 2;
-  var arr = true;
-  var half = 1;
-  while (arr==true) {
-    if (keynum == 2) {
-      keynum = 2;
-      break;
-    }   
-    for (i=2; i<keynum; i++) {
-      if (keynum%i == 0) {
-        if (Number.isInteger(keynum**0.5)) {
-        half += 1};
-        if (i*i*i == keynum) { half += 2};
-        keynum = keynum / i;
-        arr = true;
-        break
+  var simpleArr = function (number) {
+    var simplearr = [];
+    var i = 2;
+    while (i*i <= number) {
+  
+      while (number%i == 0) {
+        simplearr.push(i);
+        number = number/i;
       };
-      arr = false
+  
+     i += 1; 
+    };
+  
+    if (number>1) {
+      simplearr.push(number)
+    
+    };
+  return simplearr
+  };
+  
+  var ZeroCounter = function (number, base) {
+  var keynumarr = simpleArr(base);
+//  console.log(keynumarr)
+  var setarr = [];
+  setarr.push(keynumarr[0]);
+  
+  if (keynumarr.length > 1) {
+    for (var k=1; k<keynumarr.length; k++) {
+        if (keynumarr[k] != keynumarr[k-1]) {
+            setarr.push(keynumarr[k]);    
+        };
+    };
+    };
+ //   console.log(setarr);
+    var ans = []
+    
+  for (var l=0; l<setarr.length; l++) {
+    keyindex = keynumarr.filter(word => word == setarr[l]).length;
+    ans.push(counter(number, setarr[l], keyindex)) 
+  };
+  var answer = ans[0];
+  for (var i=1; i<ans.length; i++) {
+    if (ans[i] < answer) {
+      answer = ans[i];
     };
   };
-
- count = Math.floor(num/keynum);
-
- while (keynum**stepen <= num) {
-   count += Math.floor(num/(keynum**stepen));
-   stepen += 1;
- }; 
-
- return Math.floor(count/half)
-}
+  return answer
+  };
+  
+  var counter = function(num, keynum, keyindex) {
+    var count = 0;
+    var step = 0;
+   // console.log("BASE = " + num + ", keynum = " + keynum + " keindex = " + keyindex);
+    while (keynum ** step <= num) {
+      
+      step += 1;
+    };
+  
+    for (var i=1; i <= step; i++) {
+      count += Math.floor(num/(keynum ** i));
+    };
+    count = Math.floor(count/keyindex);
+    return count
+  };
+return ZeroCounter(number,base)
+  };
+  
